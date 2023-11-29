@@ -1,0 +1,171 @@
+The prototype of ft_printf() is:
+
+int ft_printf(const char *, ...);
+
+Here are the requirements:
+• Don’t implement the buffer management of the original printf().
+• Your function has to handle the following conversions: cspdiuxX%
+• Your function will be compared against the original printf().
+• You must use the command ar to create your library. Using the libtool command is forbidden.
+• Your libftprintf.a has to be created at the root of your repository.
+
+You have to implement the following conversions:
+• %c Prints a single character.
+• %s Prints a string (as defined by the common C convention).
+• %p The void * pointer argument has to be printed in hexadecimal format.
+• %d Prints a decimal (base 10) number.
+• %i Prints an integer in base 10.
+• %u Prints an unsigned decimal (base 10) number.
+• %x Prints a number in hexadecimal (base 16) lowercase format.
+• %X Prints a number in hexadecimal (base 16) uppercase format.
+• %% Prints a percent sign.
+
+
+PROTOTYPE:
+int ft_printf(const char *, ...);
+
+DESCRIPTION:
+The function in the printf() family produses output according to the format.
+
+RETURN VALUE:
+print_f returns an int, it's the number of characters that are printed (excluding the null byte used to end output to strings).
+
+NOTES:
+Look at the "..." in the function prototype.
+This means that printf() is a VARIADIC function.
+A variadic function can take a variable number of arguments (including zero arguments) of different types.
+To implement this, we will use the functions that are authorized by the subject -> malloc, free, write, va_start, va_arg, va_copy, va_end
+
+
+PROTOTYPE:
+va_list		variable_name;
+
+DESCRIPTION:
+va_list is not a function, it's a structure that will be used by the rest of the allowed functions: va_start(), va_arg() and va_end().
+The va_list structure will store the extra arguments, but we dont have to initialize or free it.
+That is what the va_start() and va_end() marcos are for.
+
+PROTOTYPE:
+void va_start(va_list argument_list, last_known_parameter);
+
+DESCRIPTION:
+va_start is a macro that initializes the argument_list, so we can use it with va_arg() and va_end(). va_start has to be called first. 
+The parameter "last_known_parameter" is the NAME of the last known parameter of the calling function (in this case ft_printf).
+Because then the va_list knows where all the "extra" arguments start.
+
+PROTOTYPE:
+argument_type va_arg(va_list argument_list, argument_type);
+
+DESCRIPTION:
+va_arg modifies argument_list everytime its called, so that the next time it's called it will return the next argument. 
+The first time you use va_arg after va_start, it returns the argument after last_known_parameter.
+We have to make sure we give va_arg the correct datatype of the variable to return.
+
+PROTOTYPE:
+void va_end(va_list argument_list);
+
+DESCRIPTION:
+va_end will basically destroy your va_list.
+
+When we use va_start, we HAVE TO use va_end as well in the same function.
+
+PROTOTYPES:
+va_list			variable_name;
+void 			va_start(va_list argument_list, last_known_parameter);
+argument_type 	va_arg(va_list argument_list, argument_type);
+void 			va_end(va_list argument_list);
+
+
+
+VISUALS:
+
+ft_printf("%d, %c", 42, n);
+		  |______| |_____|
+		   *char	 ...
+
+WE NEED:
+int	return_value; 	//because printf returns an int.
+
+va_list		give_it_a_name		---> 		42(int) 	n(char)		// va_list will now point to the first element of this array.
+va_start	(va_list, last_known_parameter)
+va_arg		(va_list, int)											// We call this on our va_list and we give it type of element we want it to retrieve. It will return the element that was stored, and it will update the va_list, so that now it will point to the next element.
+va_arg		(va_list, char)											// We call va_arg again, but va_list is now pointing to the next element. So when we tell va_arg that we need a char, so it will return your character 'n', and its going to update va_list by the size of a character. now its pointing to the area of memory right after the last element.
+va_end		(va_list)												// We now have retrieved all the elements from our list, so we can savely dispose of it by calling va_end. va_list is now undefined.  
+
+
+EXEMPLE:
+
+double average (int num, ...)
+{
+    va_list arguments;
+    double sum = 0;
+ 
+    // Initializing arguments to store all values after num
+    va_start(arguments, num);
+    // Sum all the inputs; we still rely on the function caller to tell us how many there are
+    int x = 0;
+	while(x < num)
+    {
+        sum += va_arg(arguments, double);
+		x++;
+    }
+    va_end(arguments);                  // Cleans up the list
+ 
+    return(sum / num);                      
+}
+ 
+int main()
+{
+    // this computes the average of 13.2, 22.3 and 4.5 (3 indicates the number of values to average)
+    printf("%f\n", average(3, 12.2, 22.3, 4.5));
+    // here it computes the average of the 5 values 3.3, 2.2, 1.1, 5.5 and 3.3
+    printf("%f\n", average(5, 3.3, 2.2, 1.1, 5.5, 3.3));
+}
+
+
+EXEMPLE 2:
+
+int sum(int count, ...)
+{
+	int		i;
+	int 	x;
+	int 	sum;
+	va_list	args;
+	
+	va_start(args, count);
+	i = 0;
+	sum = 0;
+	while(i < count)
+	{
+		x = va_arg(args, int);
+		sum = sum + x;
+		i++;
+	}
+	va_end(args);
+	return(sum);
+}
+
+int sum2(int a, ...)
+{
+	int 	x;
+	int 	sum;
+	va_list	args;
+	
+	va_start(args, a);
+	sum = a;
+	x = va_arg(args, int);
+	while(x != NULL)
+	{
+		sum = sum + x;
+		x = va_arg(args, int);
+	}
+	va_end(args);
+	return(sum);
+}
+
+int main(void)
+{
+	printf("the sum is: %d\n", sum(4, 5, 5, 5, 5));
+	printf("the sum2 is: %d\n", sum2(5, 5, 5, 5, NULL));
+	return (0);
+}
