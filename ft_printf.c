@@ -6,7 +6,7 @@
 /*   By: livliege <livliege@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 14:13:39 by livliege          #+#    #+#             */
-/*   Updated: 2023/12/12 13:46:06 by livliege         ###   ########.fr       */
+/*   Updated: 2023/12/12 17:47:28 by livliege         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int	ft_printf(const char *string_to_print, ...)
 	int			char_count;
 	va_list		arguments;
 
+	if (string_to_print == NULL)
+		return (-1);
 	va_start (arguments, string_to_print);
 	i = 0;
 	char_count = 0;
@@ -51,14 +53,14 @@ int	ft_printf(const char *string_to_print, ...)
 	{
 		if (string_to_print[i] == '%')
 		{
+			if (string_to_print[i + 1] == '\0')
+				return (-1);
 			char_count += ft_format_specefier \
 				(string_to_print[i + 1], arguments);
 			i++;
 		}
 		else
-		{
 			char_count += ft_print_char(string_to_print[i]);
-		}
 		i++;
 	}
 	va_end(arguments);
