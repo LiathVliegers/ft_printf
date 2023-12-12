@@ -6,7 +6,7 @@
 /*   By: livliege <livliege@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 15:18:49 by livliege          #+#    #+#             */
-/*   Updated: 2023/12/07 17:28:49 by livliege         ###   ########.fr       */
+/*   Updated: 2023/12/12 16:32:16 by livliege         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int main()
 	// ft_printf("%s%%d:  %s%d %d %d %d %d %d%s\n", YELLOW, GREEN, 42, -8, 0, INT_MAX, INT_MIN, 'L', DEFAULT);
 	// printf("%s%%d:  %s%d %d %d %d %d %d%s\n", YELLOW, RED, 42, -8, 0, INT_MAX, INT_MIN, 'L', DEFAULT);			//   2147483648 doesn't work?
 
-	// // %i			-2147483648		till	214748364
+	// // %i			-2147483648		till	2147483647
 	// ft_printf("%s%%i:  %s%i %i %i %i %i %i%s\n", YELLOW, GREEN, 42, -8, 0, INT_MAX, INT_MIN, 'L', DEFAULT);
 	// printf("%s%%i:  %s%i %i %i %i %i %i%s\n", YELLOW, RED, 42, -8, 0, INT_MAX, INT_MIN, 'L', DEFAULT);			//   2147483648 doesn't work?
 
@@ -78,19 +78,19 @@ int main()
 
 	ft_printf("------------------------------------------------------------------------------------------------------------------------\n");
 
-	// %d
+	// %d			-2147483648		till	2147483647
 	int ft_printf_d = ft_printf("%s%%d:  %s%d %d %d %d %d %d%s ", YELLOW, GREEN, 42, -8, 0, INT_MAX, INT_MIN, 'L', DEFAULT);
 	printf("							ft_printf printed %s%d%s characters\n", YELLOW, ft_printf_d, DEFAULT);
 	int printf_d = printf("%s%%d:  %s%d %d %d %d %d %d%s ", YELLOW, RED, 42, -8, 0, INT_MAX, INT_MIN, 'L', DEFAULT);
 	printf("   						   printf printed %s%d%s characters\n", YELLOW, printf_d, DEFAULT);
 	
-	// %i
+	// %i			-2147483648		till	2147483647
 	int ft_printf_i = ft_printf("%s%%i:  %s%i %i %i %i %i %i%s ", YELLOW, GREEN, 42, -8, 0, INT_MAX, INT_MIN, 'L', DEFAULT);
 	printf("							ft_printf printed %s%d%s characters\n", YELLOW, ft_printf_i, DEFAULT);
 	int printf_i = printf("%s%%i:  %s%i %i %i %i %i %i%s ", YELLOW, RED, 42, -8, 0, INT_MAX, INT_MIN, 'L', DEFAULT);
 	printf("   						   printf printed %s%d%s characters\n", YELLOW, printf_i, DEFAULT);
 
-	// %u
+	// %u 					0		till 	4294967295
 	int ft_printf_u = ft_printf("%s%%u:  %s%u %u %u %u %u%s ", YELLOW, GREEN, 42, -8, 0, UINT_MAX, 'L', DEFAULT);
 	printf("							ft_printf printed %s%d%s characters\n", YELLOW, ft_printf_u, DEFAULT);
 	int printf_u = printf("%s%%u:  %s%u %u %u %u %u%s ", YELLOW, RED, 42, -8, 0, UINT_MAX, 'L', DEFAULT);
@@ -145,6 +145,26 @@ int main()
 	int trippelpercent = printf("%sThis is the result of three %% and a new line character: %%%\n%s", RED, DEFAULT);
 	printf("ft_printf printed %s%d%s characters\n", YELLOW, ft_trippelpercent, DEFAULT);
 	printf("   printf printed %s%d%s characters\n", YELLOW, trippelpercent, DEFAULT);
+
+	int ft_percentZ = ft_printf("%sThis is the result of an %% and a different placeholder than expected (in this case V): %V\n%s", GREEN, DEFAULT);
+	int percentZ = printf("%sThis is the result of an %% and a different placeholder than expected (in this case V): %V\n%s", RED, DEFAULT);
+	printf("ft_printf printed %s%d%s characters\n", YELLOW, ft_percentZ, DEFAULT);
+	printf("   printf printed %s%d%s characters\n", YELLOW, percentZ, DEFAULT);
+
+	int ft_percentNULL = ft_printf("%sThis is the result of an %% and a different placeholder than expected (in this case \\0): %\0\n%s", GREEN, DEFAULT);
+	int percentNULL = printf("%sThis is the result of an %% and a different placeholder than expected (in this case \\0): %\0\n%s", RED, DEFAULT);
+	printf("ft_printf printed %s%d%s characters\n", YELLOW, ft_percentZ, DEFAULT);
+	printf("   printf printed %s%d%s characters\n", YELLOW, percentZ, DEFAULT);
+
+	int ft_percenta = ft_printf("%sThis is the result of an %% and a different placeholder than expected (in this case a): %a\n%s", GREEN, DEFAULT);
+	int percenta = printf("%sThis is the result of an %% and a different placeholder than expected (in this case a): %a\n%s", RED, DEFAULT);
+	printf("ft_printf printed %s%d%s characters\n", YELLOW, ft_percentZ, DEFAULT);
+	printf("   printf printed %s%d%s characters\n", YELLOW, percentZ, DEFAULT);
+
+	int ft_percentA = ft_printf("%sThis is the result of an %% and a different placeholder than expected (in this case A): %A\n%s", GREEN, DEFAULT);
+	int percentA = printf("%sThis is the result of an %% and a different placeholder than expected (in this case A): %A\n%s", RED, DEFAULT);
+	printf("ft_printf printed %s%d%s characters\n", YELLOW, ft_percentZ, DEFAULT);
+	printf("   printf printed %s%d%s characters\n", YELLOW, percentZ, DEFAULT);
 
 	int ft_big_ascii_number = ft_printf("%scharacter of ascii value 1024 will be invisible (using | cat-e will give you \"^@$\" ): %c\n%s", GREEN, 1024, DEFAULT);
 	int big_ascii_number = printf("%scharacter of ascii value 1024 will be invisible (using | cat-e will give you \"^@$\" ): %c\n%s", RED, 1024, DEFAULT);
