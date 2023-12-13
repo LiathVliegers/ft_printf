@@ -6,15 +6,18 @@
 /*   By: livliege <livliege@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 15:26:23 by livliege          #+#    #+#             */
-/*   Updated: 2023/12/07 18:25:54 by livliege         ###   ########.fr       */
+/*   Updated: 2023/12/13 17:30:10 by livliege         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdarg.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <stddef.h>
-#include <stdlib.h>
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
+
+# include <stdarg.h>
+# include <stdio.h>
+# include <unistd.h>
+# include <stddef.h>
+# include <stdlib.h>
 
 int		ft_format_specefier(char placeholder, va_list arguments);
 int		ft_printf(const char *string_to_print, ...);
@@ -30,3 +33,5 @@ char	*itoa_converter(int n, char *str, size_t n_len);
 char	*ft_itoa(int n, char *str);
 char	*uitoa_converter(unsigned int n, char *str, size_t n_len);
 char	*ft_uitoa(unsigned int n, char *str);
+
+#endif
